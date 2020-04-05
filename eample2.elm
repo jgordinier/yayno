@@ -44,7 +44,7 @@ view model =
                 [ id "roar"
                 -- src can be a local file too.
                 , src "https://soundbible.com/mp3/Tyrannosaurus%20Rex%20Roar-SoundBible.com-807702404.mp3"
-                , controls True
+                , play True
                 ] []
             ]
         ]
