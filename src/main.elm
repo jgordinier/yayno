@@ -3,18 +3,17 @@ port module Main exposing (Msg(..), subscriptions, view)
 import Browser
 import Html exposing (..)
 import Html.Attributes as Attr exposing (..)
+import Html.Events exposing (onClick)
 import Json.Encode as E
 import Task
 -- import Time exposing (..)
 
 
 port play : E.Value -> Cmd msg
-
-
 type Msg
-    = Beep Time.Posix
-
-
+    = Beep Maybe Bool
+    | Nothing
+    
 main =
     Browser.element
         { init = init
@@ -23,15 +22,8 @@ main =
         , subscriptions = subscriptions
         }
 
-
 type alias Model =
     Int
-
-  -- Yes ->
-  --     "https://ia801509.us.archive.org/1/items/yay_20200404/YAY.mp3"
-
-  --   No ->
-  --     "https://ia801405.us.archive.org/35/items/no_20200404/No.mp3"
 
 init : () -> ( Model, Cmd Msg )
 init _ =
@@ -46,22 +38,42 @@ update msg model =
 
 view model =
     div [ ] [
-        div [] [text "Every 5 seconds... "]
+        button [ onClick Beep ] [ text "YES" ]
             , div [ id "audio" ]
             [ audio
                 [ id "pulse-beep"
                 -- src can be a local file too.
-                , src "https://soundbible.com/mp3/Tyrannosaurus%20Rex%20Roar-SoundBible.com-807702404.mp3"
+                , src "https://ia801509.us.archive.org/1/items/yay_20200404/YAY.mp3"
                 , controls False
                 ] []
             ]
         ]
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Time.every 5000 Beep
+subscriptions : Model -> Sub msg
+subscriptions =
+    Silent
 
+
+-- <!doctype html>
+-- <html>
+--   <head>
+--     <title>Audio</title>
+--   </head>
+--   <body>
+
+--     <script>
+--       function play() {
+--         var audio = document.getElementById("audio");
+--         audio.play();
+--       }
+--     </script>
+
+--     <input type="button" value="PLAY" onclick="play()">
+--     <audio id="audio" src="http://dev.interactive-creation-works.net/1/1.ogg"></audio>
+
+--   </body>
+-- </html>
 
 -- MODEL
 -- type alias Model = String
@@ -90,3 +102,9 @@ subscriptions model =
 --     [ button [ onClick Yes ] [ text "YES" ]
 --     , button [ onClick No ] [ text "NO" ]
 --     ]
+
+  -- Yes ->
+  --     "https://ia801509.us.archive.org/1/items/yay_20200404/YAY.mp3"
+
+  --   No ->
+  --     "https://ia801405.us.archive.org/35/items/no_20200404/No.mp3"
